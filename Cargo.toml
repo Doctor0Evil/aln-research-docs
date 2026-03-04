@@ -1,0 +1,65 @@
+[package]
+name = "aln-research-docs"
+version = "1.0.0"
+edition = "2021"
+authors = ["ALN Sovereign Stack Contributors"]
+description = "Comprehensive documentation, research papers, and security analyses"
+license = "CC-BY-SA-4.0"
+repository = "https://github.com/aln-sovereign/aln-research-docs"
+documentation = "https://docs.aln.io"
+keywords = ["aln", "documentation", "research", "security", "governance"]
+categories = ["documentation", "science"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+thiserror = "1.0"
+hex = "0.4"
+sha3 = "0.10"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+log = "0.4"
+env_logger = "0.10"
+clap = { version = "4.0", features = ["derive"] }
+pulldown-cmark = "0.9"
+comrak = "0.18"
+syntect = "5.0"
+handlebars = "4.0"
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+walkdir = "2.0"
+regex = "1.0"
+notify = "6.0"
+
+[dev-dependencies]
+criterion = "0.5"
+tempfile = "3.0"
+
+[[bin]]
+name = "docs-builder"
+path = "src/bin/docs_builder.rs"
+
+[[bin]]
+name = "hex-stamp-generator"
+path = "src/bin/hex_stamp_gen.rs"
+
+[features]
+default = ["std", "full-build"]
+std = []
+full-build = ["tokio", "reqwest"]
+offline-mode = []
+watch-mode = ["notify"]
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+
+[package.metadata.docs.rs]
+all-features = true
+
+[lints.clippy]
+all = "deny"
+pedantic = "warn"
+unsafe_code = "deny"
